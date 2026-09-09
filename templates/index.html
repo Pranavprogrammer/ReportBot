@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ReportBot — Sales Analytics</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">RB</div>
+        <div><strong>ReportBot</strong><span>Sales Automation</span></div>
+      </div>
+      <nav>
+        <a class="active" href="/">Overview</a>
+        <a href="#upload">Data Ingestion</a>
+        <a href="#reports">Reports</a>
+        <a href="#runs">Run History</a>
+      </nav>
+      <div class="side-card">
+        <div class="status-dot"></div>
+        <div><b>Pipeline ready</b><small>Daily schedule: 09:00 IST</small></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">AUTOMATED SALES INTELLIGENCE</p>
+          <h1>Good morning 👋</h1>
+          <p class="muted">Turn raw sales CSVs into decision-ready reports automatically.</p>
+        </div>
+        <button class="primary" id="runBtn">Run pipeline</button>
+      </header>
+
+      <section class="cards">
+        <div class="metric"><span>Total revenue</span><strong>₹{{ "{:,.0f}".format(summary.last_run.metrics.total_revenue if false else 0) }}</strong><small id="revenue">Loading…</small></div>
+        <div class="metric"><span>Successful runs</span><strong>{{ summary.successful_runs }}</strong><small>of {{ summary.total_runs }} total runs</small></div>
+        <div class="metric"><span>Rows processed</span><strong>{{ "{:,}".format(summary.rows_processed) }}</strong><small>Across completed runs</small></div>
+        <div class="metric"><span>Last status</span><strong class="success">{{ summary.last_run.status if summary.last_run else "READY" }}</strong><small>{{ summary.last_run.finished_at if summary.last_run else "No runs yet" }}</small></div>
+      </section>
+
+      <section class="grid two">
+        <div class="panel">
+          <div class="panel-head"><div><h2>Revenue trend</h2><p>Daily revenue from the latest processed dataset</p></div></div>
+          <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h2>Regional performance</h2><p>Revenue contribution by region</p></div></div>
+          <div class="chart-wrap"><canvas id="regionChart"></canvas></div>
+        </div>
+      </section>
+
+      <section class="grid two">
+        <div class="panel" id="upload">
+          <div class="panel-head"><div><h2>Data ingestion</h2><p>Upload a sales CSV into the incoming queue.</p></div></div>
+          <form action="/upload" method="post" enctype="multipart/form-data" class="upload">
+            <input type="file" name="file" accept=".csv" required>
+            <button class="secondary" type="submit">Add CSV</button>
+          </form>
+          <div class="hint">Required columns: date, product, quantity, price, region, order_id</div>
+        </div>
+
+        <div class="panel" id="reports">
+          <div class="panel-head"><div><h2>Latest report</h2><p>Generated automatically after each successful run.</p></div></div>
+          {% if summary.last_run and summary.last_run.report_file %}
+            <a class="report-link" href="/reports/{{ summary.last_run.report_file }}">Download PDF report →</a>
+          {% else %}
+            <div class="empty">Run the pipeline to generate your first report.</div>
+          {% endif %}
+        </div>
+      </section>
+
+      <section class="panel" id="runs">
+        <div class="panel-head"><div><h2>Run history</h2><p>Every pipeline execution is logged in SQLite.</p></div></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Started</th><th>Status</th><th>Files</th><th>Rows</th><th>Quarantined</th><th>Email</th><th>Report</th></tr></thead>
+            <tbody id="runsBody">
+              {% for run in runs %}
+              <tr>
+                <td>{{ run.started_at }}</td>
+                <td><span class="badge {{ run.status|lower }}">{{ run.status }}</span></td>
+                <td>{{ run.files_processed }}</td>
+                <td>{{ run.rows_processed }}</td>
+                <td>{{ run.quarantined_rows }}</td>
+                <td>{{ "Sent" if run.email_sent else "Disabled" }}</td>
+                <td>{% if run.report_file %}<a href="/reports/{{ run.report_file }}">PDF</a>{% else %}—{% endif %}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer>ReportBot • Python + FastAPI + Pandas + ReportLab + SQLite</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

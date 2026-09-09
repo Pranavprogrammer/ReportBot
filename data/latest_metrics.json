@@ -1,0 +1,85 @@
+{
+  "total_revenue": 700400.0,
+  "orders": 18,
+  "aov": 38911.11,
+  "mom_growth": 0.0,
+  "clv": 466933.33,
+  "top_products": [
+    {
+      "product": "Laptop",
+      "revenue": 455000.0
+    },
+    {
+      "product": "Monitor",
+      "revenue": 144000.0
+    },
+    {
+      "product": "Headphones",
+      "revenue": 45000.0
+    },
+    {
+      "product": "Keyboard",
+      "revenue": 32400.0
+    },
+    {
+      "product": "Mouse",
+      "revenue": 24000.0
+    }
+  ],
+  "regional": [
+    {
+      "region": "North",
+      "revenue": 314800.0
+    },
+    {
+      "region": "West",
+      "revenue": 158000.0
+    },
+    {
+      "region": "East",
+      "revenue": 121600.0
+    },
+    {
+      "region": "South",
+      "revenue": 106000.0
+    }
+  ],
+  "daily_revenue": [
+    {
+      "date": "2026-09-01",
+      "revenue": 136400.0
+    },
+    {
+      "date": "2026-09-02",
+      "revenue": 45000.0
+    },
+    {
+      "date": "2026-09-03",
+      "revenue": 80000.0
+    },
+    {
+      "date": "2026-09-04",
+      "revenue": 56000.0
+    },
+    {
+      "date": "2026-09-05",
+      "revenue": 142600.0
+    },
+    {
+      "date": "2026-09-06",
+      "revenue": 34000.0
+    },
+    {
+      "date": "2026-09-07",
+      "revenue": 74600.0
+    },
+    {
+      "date": "2026-09-08",
+      "revenue": 46800.0
+    },
+    {
+      "date": "2026-09-09",
+      "revenue": 85000.0
+    }
+  ]
+}
