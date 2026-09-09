@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.pytest_cache/
+data/reportbot.db
+data/latest_metrics.json
+data/reports/*.pdf
+data/quarantine/*.csv
