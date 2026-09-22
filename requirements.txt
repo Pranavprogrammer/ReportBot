@@ -6,3 +6,4 @@ pandas==2.2.3
 reportlab==4.2.5
 schedule==1.2.2
 pytest==8.3.4
+gunicorn==23.0.0
